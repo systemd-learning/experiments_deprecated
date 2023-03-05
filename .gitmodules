@@ -1,0 +1,12 @@
+[submodule "busybox"]
+	path = packages/busybox
+	url = git://busybox.net/busybox.git
+[submodule "u-boot"]
+	path = packages/u-boot
+	url = https://github.com/u-boot/u-boot.git
+[submodule "glibc"]
+	path = packages/glibc
+	url = https://mirrors.tuna.tsinghua.edu.cn/git/glibc.git
+[submodule "systemd"]
+	path = packages/systemd
+	url = https://github.com/systemd/systemd.git
