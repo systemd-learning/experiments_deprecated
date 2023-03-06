@@ -24,6 +24,7 @@ set -x
 
 /bin/mount -a
 /sbin/mdev -s
+sleep 2
 /bin/mount /dev/mmcblk0 /mnt
 exec switch_root /mnt /sbin/init
 EOF
@@ -43,7 +44,6 @@ make_diskimg() {
 	ln -s ../bin/busybox init
 	popd
 	sudo cp -r * ${MNT}
-	ln -s bin/busybox init
 	popd
 
 	sudo sync

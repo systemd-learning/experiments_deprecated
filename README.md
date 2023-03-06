@@ -1,7 +1,7 @@
 
 - download
 
-$ git clone https://github.com/w-simon/little-experiments.git && cd little-experiments
+$ git clone https://github.com/systemd-learning/experiments.git && cd experiments
 
 - init submodules
 
