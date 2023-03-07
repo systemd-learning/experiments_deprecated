@@ -79,6 +79,9 @@ EOF
 ::respawn:-/bin/sh
 ::ctrlaltdel:/bin/umount -a -r
 EOF
+	cat >etc/issue <<EOF
+Welcome
+EOF
 	popd
 }
 
