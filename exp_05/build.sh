@@ -12,15 +12,9 @@ TARGET_DTB=arm/vexpress-v2f-1xv7-ca53x2.dtb
 INITRAMFS=rootfs.gz
 DISK=disk.img
 
-config_busybox() {
-	pushd ${BASE}/../busybox
-	make ARCH=arm defconfig O=${BUILD_BUSYBOX}
-	popd
-}
-
 build_glibc() {
 	cd ${BUILD_BUSYBOX}
-	${BASE}/../glibc/configure aarch64-none-linux-gnu --target=aarch64-none-linux-gnu --build=x86_64-pc-linux-gnu --prefix=  --enable-add-ons
+	${PACKAGES}/glibc/configure aarch64-none-linux-gnu --target=aarch64-none-linux-gnu --build=x86_64-pc-linux-gnu --prefix=  --enable-add-ons
 	make  -j ${NR}
 	make install install_root=${ROOTFS}
 }
@@ -59,7 +53,9 @@ build_kernel
 deploy_kernel
 
 # glibc
+config_glibc
 build_glibc
+deploy_glibc
 
 # busybox
 config_busybox

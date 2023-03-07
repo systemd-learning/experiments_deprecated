@@ -5,6 +5,7 @@ source ../common/env.sh
 prepare() {
 	mkdir -p  ${BUILD_KERNEL}
 	mkdir -p  ${BUILD_BUSYBOX}
+	mkdir -p  ${BUILD_GLIBC}
 	mkdir -p  ${MNT}
 	mkdir -p  ${DEPLOY}
 	mkdir -p  ${ROOTFS}
@@ -26,7 +27,7 @@ deploy_kernel() {
 	pushd ${BUILD_KERNEL}
 	cp arch/${TARGET_ARCH}/boot/${TARGET_IMG} ${DEPLOY}/
 	cp arch/${TARGET_ARCH}/boot/dts/${TARGET_DTB} ${DEPLOY}/
-	make INSTALL_MOD_PATH=${ROOTFS} INSTALL_MOD_STRIP=1 modules_install 
+	make CROSS_COMPILE=${CROSS_PREFIX} INSTALL_MOD_PATH=${ROOTFS} INSTALL_MOD_STRIP=1 modules_install 
 	popd
 }
 
@@ -49,6 +50,24 @@ build_busybox() {
 deploy_busybox() {
 	pushd ${BUILD_BUSYBOX}
 	make ARCH=arm CROSS_COMPILE=${CROSS_PREFIX} -j ${NR} install CONFIG_PREFIX=${ROOTFS}
+	popd
+}
+
+config_glibc() {
+        pushd ${BUILD_GLIBC}
+        ${PACKAGES}/glibc/configure aarch64-none-linux-gnu --target=aarch64-none-linux-gnu --build=x86_64-pc-linux-gnu --prefix=  --enable-add-ons
+	popd
+}
+
+build_glibc() {
+        pushd ${BUILD_GLIBC}
+        make -j ${NR}
+	popd
+}
+
+deploy_glibc() {
+        pushd ${BUILD_GLIBC}
+        make install install_root=${ROOTFS}
 	popd
 }
 
