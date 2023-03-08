@@ -12,6 +12,11 @@ TARGET_DTB=arm/vexpress-v2f-1xv7-ca53x2.dtb
 INITRAMFS=rootfs.gz
 DISK=disk.img
 
+config_busybox() {
+	cd ${PACKAGES}/busybox
+	make ARCH=arm defconfig O=${BUILD_BUSYBOX}
+}
+
 build_glibc() {
 	cd ${BUILD_BUSYBOX}
 	${PACKAGES}/glibc/configure aarch64-none-linux-gnu --target=aarch64-none-linux-gnu --build=x86_64-pc-linux-gnu --prefix=  --enable-add-ons
@@ -22,9 +27,9 @@ build_glibc() {
 make_diskimg() {
 	pushd ${DEPLOY}
 	rm -f ${DISK}
-	dd if=/dev/zero of=${DISK} bs=1024k count=128
+	dd if=/dev/zero of=${DISK} bs=1024k count=256
 	sudo sfdisk ${DISK} << EOF
-1,102400,L,*
+1,204800,L,*
 ,,,,
 EOF
 	DEV=$(sudo losetup -f)
